@@ -60,8 +60,11 @@ export function SignUpForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
+          <div className="flex justify-center">
+            <img src="/brand/mark.png" alt="ClubHub" className="w-16 h-16" />
+          </div>
           <CardTitle className="text-2xl">Sign up</CardTitle>
-          <CardDescription>Create a new account</CardDescription>
+          <CardDescription>Create your ClubHub account</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSignUp}>

@@ -1,0 +1,170 @@
+export type ClubStatus = "active" | "suspended" | "onboarding";
+export type ClubCategory = "sports" | "social" | "alumni" | "professional" | "other";
+export type BillingInterval = "monthly" | "annual" | "one_time";
+export type MemberStatus = "pending" | "active" | "expired" | "suspended" | "cancelled";
+export type EventStatus = "draft" | "published" | "cancelled" | "completed";
+export type RegistrationStatus = "registered" | "waitlisted" | "cancelled" | "attended" | "no_show";
+export type PaymentType = "membership_fee" | "event_ticket" | "other";
+export type PaymentStatus = "pending" | "succeeded" | "failed" | "refunded";
+export type AnnouncementAudience = "all" | "plan_specific" | "role_specific";
+export type NotificationChannel = "in_app" | "push" | "email" | "sms";
+
+export const PERMISSION_KEYS = [
+  "members.view",
+  "members.edit",
+  "members.export",
+  "events.create",
+  "events.register",
+  "payments.view",
+  "payments.refund",
+  "announcements.send",
+  "club.settings",
+  "roles.manage",
+  "audit.view",
+] as const;
+export type PermissionKey = (typeof PERMISSION_KEYS)[number];
+
+export interface Club {
+  id: string;
+  name: string;
+  slug: string;
+  description: string | null;
+  logo_url: string | null;
+  cover_image_url: string | null;
+  category: ClubCategory;
+  contact_email: string | null;
+  contact_phone: string | null;
+  address: string | null;
+  timezone: string;
+  currency: string;
+  status: ClubStatus;
+  primary_color: string;
+  created_by: string | null;
+  created_at: string;
+}
+
+export interface MembershipPlan {
+  id: string;
+  club_id: string;
+  name: string;
+  description: string | null;
+  price_cents: number;
+  currency: string;
+  billing_interval: BillingInterval;
+  grace_period_days: number;
+  is_active: boolean;
+  max_members: number | null;
+  sort_order: number;
+  created_at: string;
+}
+
+export interface Member {
+  id: string;
+  user_id: string;
+  club_id: string;
+  membership_plan_id: string | null;
+  member_number: string | null;
+  status: MemberStatus;
+  joined_at: string | null;
+  expires_at: string | null;
+  renewed_at: string | null;
+  emergency_contact: Record<string, unknown> | null;
+  custom_fields: Record<string, unknown>;
+  created_at: string;
+}
+
+export interface Profile {
+  id: string;
+  email: string | null;
+  first_name: string | null;
+  last_name: string | null;
+  avatar_url: string | null;
+  created_at: string;
+}
+
+export interface EventRow {
+  id: string;
+  club_id: string;
+  title: string;
+  description: string | null;
+  category: string | null;
+  location: string | null;
+  is_virtual: boolean;
+  start_at: string;
+  end_at: string | null;
+  timezone: string;
+  capacity: number | null;
+  registration_deadline: string | null;
+  price_cents: number;
+  currency: string;
+  status: EventStatus;
+  cover_image_url: string | null;
+  created_by: string | null;
+  created_at: string;
+}
+
+export interface EventRegistration {
+  id: string;
+  event_id: string;
+  member_id: string;
+  status: RegistrationStatus;
+  registered_at: string;
+  checked_in_at: string | null;
+  payment_id: string | null;
+}
+
+export interface Announcement {
+  id: string;
+  club_id: string;
+  title: string;
+  body: string;
+  audience: AnnouncementAudience;
+  audience_plan_id: string | null;
+  audience_role_id: string | null;
+  channels: NotificationChannel[];
+  scheduled_at: string | null;
+  sent_at: string | null;
+  created_by: string | null;
+  created_at: string;
+}
+
+export interface Payment {
+  id: string;
+  club_id: string;
+  member_id: string;
+  type: PaymentType;
+  amount_cents: number;
+  currency: string;
+  provider: string;
+  provider_reference: string | null;
+  status: PaymentStatus;
+  invoice_number: string | null;
+  paid_at: string | null;
+  receipt_url: string | null;
+  event_id: string | null;
+  membership_plan_id: string | null;
+  created_at: string;
+}
+
+export interface NotificationRow {
+  id: string;
+  user_id: string;
+  club_id: string | null;
+  announcement_id: string | null;
+  type: string;
+  channel: NotificationChannel;
+  title: string | null;
+  body: string | null;
+  status: "queued" | "sent" | "delivered" | "failed";
+  read_at: string | null;
+  sent_at: string | null;
+  created_at: string;
+}
+
+export interface Role {
+  id: string;
+  club_id: string | null;
+  name: string;
+  description: string | null;
+  is_system: boolean;
+}
