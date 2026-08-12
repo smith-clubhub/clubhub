@@ -48,6 +48,26 @@ export async function hasClubPermission(clubId: string, permission: PermissionKe
   return Boolean(allowed);
 }
 
+export async function requirePlatformAdmin() {
+  const supabase = await createClient();
+  const { data: userData } = await supabase.auth.getUser();
+  if (!userData.user) redirect("/auth/login");
+
+  const { data: allowed } = await supabase.rpc("is_platform_admin", { uid: userData.user.id });
+  if (!allowed) redirect("/");
+
+  return userData.user;
+}
+
+export async function isPlatformAdmin() {
+  const supabase = await createClient();
+  const { data: userData } = await supabase.auth.getUser();
+  if (!userData.user) return false;
+
+  const { data: allowed } = await supabase.rpc("is_platform_admin", { uid: userData.user.id });
+  return Boolean(allowed);
+}
+
 export async function isClubMember(clubId: string) {
   const supabase = await createClient();
   const { data: userData } = await supabase.auth.getUser();

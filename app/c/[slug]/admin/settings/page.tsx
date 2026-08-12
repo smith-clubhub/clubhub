@@ -1,11 +1,15 @@
 import { getClubContext, can } from "@/lib/club-context";
 import { createClient } from "@/lib/supabase/server";
+import { getClubMediaUsage } from "@/lib/media";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { MediaUploadForm } from "@/components/media-upload-form";
+import { MediaGallery } from "@/components/media-gallery";
 import { ClubSettingsForm } from "./club-settings-form";
 import { RoleAssignmentForm } from "./role-assignment-form";
 import { removeRoleAction } from "./actions";
+import type { ClubMediaAsset } from "@/lib/types";
 
 type ProfileRef = { first_name: string | null; last_name: string | null; email: string | null } | null;
 
@@ -26,15 +30,96 @@ export default async function ClubSettingsPage({ params }: { params: Promise<{ s
       .eq("club_id", ctx.club.id),
   ]);
 
+  const canManageSettings = can(ctx, "club.settings");
+  let mediaUsage = null;
+  let galleryAssets: ClubMediaAsset[] = [];
+  if (canManageSettings) {
+    const [usage, { data: assets }] = await Promise.all([
+      getClubMediaUsage(ctx.club.id),
+      supabase
+        .from("club_media_assets")
+        .select("*")
+        .eq("club_id", ctx.club.id)
+        .in("kind", ["gallery_photo", "gallery_video"])
+        .order("created_at", { ascending: false }),
+    ]);
+    mediaUsage = usage;
+    galleryAssets = assets ?? [];
+  }
+
   return (
     <div className="flex flex-col gap-6 max-w-2xl">
-      {can(ctx, "club.settings") && (
+      {canManageSettings && (
         <Card>
           <CardHeader>
             <CardTitle>Club settings</CardTitle>
           </CardHeader>
           <CardContent>
             <ClubSettingsForm club={ctx.club} />
+          </CardContent>
+        </Card>
+      )}
+
+      {canManageSettings && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Branding</CardTitle>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-4">
+            <MediaUploadForm
+              clubId={ctx.club.id}
+              slug={slug}
+              kind="logo"
+              label="Logo"
+              accept="image/png,image/jpeg,image/webp"
+            />
+            <MediaUploadForm
+              clubId={ctx.club.id}
+              slug={slug}
+              kind="cover"
+              label="Cover image"
+              accept="image/png,image/jpeg,image/webp"
+            />
+          </CardContent>
+        </Card>
+      )}
+
+      {canManageSettings && mediaUsage && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center justify-between">
+              <span>Photo &amp; video gallery</span>
+              <Badge variant="outline">{mediaUsage.tierName} package</Badge>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-4">
+            <p className="text-sm text-muted-foreground">
+              {mediaUsage.photoCount} / {mediaUsage.photoQuota} photos &middot; {mediaUsage.videoCount} /{" "}
+              {mediaUsage.videoQuota} videos
+            </p>
+            <MediaUploadForm
+              clubId={ctx.club.id}
+              slug={slug}
+              kind="gallery_photo"
+              label="Add a photo"
+              accept="image/png,image/jpeg,image/webp"
+              disabled={mediaUsage.photoCount >= mediaUsage.photoQuota}
+              disabledReason="Photo quota reached for your package. Ask ClubHub to upgrade your package for more photos."
+            />
+            <MediaUploadForm
+              clubId={ctx.club.id}
+              slug={slug}
+              kind="gallery_video"
+              label="Add a video"
+              accept="video/mp4,video/quicktime"
+              disabled={mediaUsage.videoQuota === 0 || mediaUsage.videoCount >= mediaUsage.videoQuota}
+              disabledReason={
+                mediaUsage.videoQuota === 0
+                  ? "Video uploads are available on the Growth and Premium packages."
+                  : "Video quota reached for your package. Ask ClubHub to upgrade your package for more videos."
+              }
+            />
+            <MediaGallery clubId={ctx.club.id} slug={slug} assets={galleryAssets} />
           </CardContent>
         </Card>
       )}

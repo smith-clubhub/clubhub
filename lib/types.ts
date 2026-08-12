@@ -8,6 +8,8 @@ export type PaymentType = "membership_fee" | "event_ticket" | "other";
 export type PaymentStatus = "pending" | "succeeded" | "failed" | "refunded";
 export type AnnouncementAudience = "all" | "plan_specific" | "role_specific";
 export type NotificationChannel = "in_app" | "push" | "email" | "sms";
+export type GeocodeStatus = "pending" | "ok" | "failed";
+export type MediaKind = "logo" | "cover" | "gallery_photo" | "gallery_video" | "event_cover";
 
 export const PERMISSION_KEYS = [
   "members.view",
@@ -40,6 +42,65 @@ export interface Club {
   status: ClubStatus;
   primary_color: string;
   created_by: string | null;
+  created_at: string;
+  package_tier_id: string;
+  latitude: number | null;
+  longitude: number | null;
+  geocode_status: GeocodeStatus;
+}
+
+export interface ClubPackageTier {
+  id: string;
+  key: string;
+  name: string;
+  description: string | null;
+  price_cents: number;
+  currency: string;
+  photo_quota: number;
+  video_quota: number;
+  streaming_enabled: boolean;
+  sort_order: number;
+  is_active: boolean;
+  created_at: string;
+}
+
+export interface EventVote {
+  id: string;
+  event_id: string;
+  user_id: string;
+  value: 1 | -1;
+  created_at: string;
+}
+
+export interface EventPublic {
+  id: string;
+  club_id: string;
+  club_slug: string;
+  club_name: string;
+  club_logo_url: string | null;
+  club_primary_color: string;
+  latitude: number;
+  longitude: number;
+  title: string;
+  description: string | null;
+  category: string | null;
+  cover_image_url: string | null;
+  start_at: string;
+  end_at: string | null;
+  price_cents: number;
+  currency: string;
+  score: number;
+}
+
+export interface ClubMediaAsset {
+  id: string;
+  club_id: string;
+  kind: MediaKind;
+  storage_path: string;
+  url: string;
+  event_id: string | null;
+  uploaded_by: string | null;
+  size_bytes: number | null;
   created_at: string;
 }
 

@@ -3,7 +3,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 export async function logAudit(
   supabase: SupabaseClient,
   params: {
-    clubId: string;
+    clubId: string | null;
     actorId: string;
     action: string;
     targetType: string;

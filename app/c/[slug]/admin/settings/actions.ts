@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { requireClubPermission } from "@/lib/rbac";
 import { logAudit } from "@/lib/audit";
+import { geocodeAddress } from "@/lib/geocoding";
 
 export async function updateClubAction(
   _prevState: { error?: string } | undefined,
@@ -15,18 +16,28 @@ export async function updateClubAction(
   const user = await requireClubPermission(clubId, "club.settings");
   const supabase = await createClient();
 
-  const payload = {
+  const address = String(formData.get("address") ?? "").trim() || null;
+
+  const payload: Record<string, unknown> = {
     name: String(formData.get("name") ?? "").trim(),
     description: String(formData.get("description") ?? "").trim() || null,
     category: String(formData.get("category") ?? "other"),
     contact_email: String(formData.get("contactEmail") ?? "").trim() || null,
     contact_phone: String(formData.get("contactPhone") ?? "").trim() || null,
-    address: String(formData.get("address") ?? "").trim() || null,
+    address,
     currency: String(formData.get("currency") ?? "ZAR").trim(),
     primary_color: String(formData.get("primaryColor") ?? "#F97316").trim(),
   };
 
   if (!payload.name) return { error: "Club name is required." };
+
+  const { data: existing } = await supabase.from("clubs").select("address").eq("id", clubId).maybeSingle();
+  if (address && address !== existing?.address) {
+    const result = await geocodeAddress(address);
+    payload.latitude = result?.lat ?? null;
+    payload.longitude = result?.lng ?? null;
+    payload.geocode_status = result ? "ok" : "failed";
+  }
 
   const { error } = await supabase.from("clubs").update(payload).eq("id", clubId);
   if (error) return { error: error.message };
