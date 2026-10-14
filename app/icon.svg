@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffb061"/>
+      <stop offset=".5" stop-color="#ff7f32"/>
+      <stop offset="1" stop-color="#f2541b"/>
+    </linearGradient>
+    <mask id="waves">
+      <rect width="100" height="100" fill="white"/>
+      <g fill="none" stroke="black" stroke-width="15.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M -14 40 L 41 17.5 Q 50 13.5 59 17.5 L 114 40"/>
+        <path d="M -14 71 L 41 48.5 Q 50 44.5 59 48.5 L 114 71"/>
+        <path d="M -14 102 L 41 79.5 Q 50 75.5 59 79.5 L 114 102"/>
+      </g>
+    </mask>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="url(#g)"/>
+  <g transform="translate(12 12) scale(.4)">
+    <circle cx="50" cy="50" r="50" fill="#fff" mask="url(#waves)"/>
+  </g>
+</svg>

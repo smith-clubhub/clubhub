@@ -12,9 +12,6 @@ export const metadata: Metadata = {
   title: "ClubHub",
   description:
     "Follow South Africa's clubs, see what's on tonight, and find the clubs nearest to you.",
-  icons: {
-    icon: "/brand/mark.png",
-  },
 };
 
 // Geometric sans that matches the ClubHub wordmark.
