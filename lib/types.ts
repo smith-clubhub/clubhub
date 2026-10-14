@@ -9,7 +9,7 @@ export type PaymentStatus = "pending" | "succeeded" | "failed" | "refunded";
 export type AnnouncementAudience = "all" | "plan_specific" | "role_specific";
 export type NotificationChannel = "in_app" | "push" | "email" | "sms";
 export type GeocodeStatus = "pending" | "ok" | "failed";
-export type MediaKind = "logo" | "cover" | "gallery_photo" | "gallery_video" | "event_cover";
+export type MediaKind = "logo" | "cover" | "gallery_photo" | "gallery_video" | "event_cover" | "post_photo" | "post_video";
 
 export const PERMISSION_KEYS = [
   "members.view",
@@ -23,6 +23,8 @@ export const PERMISSION_KEYS = [
   "club.settings",
   "roles.manage",
   "audit.view",
+  "posts.create",
+  "messages.reply",
 ] as const;
 export type PermissionKey = (typeof PERMISSION_KEYS)[number];
 
@@ -140,7 +142,18 @@ export interface Profile {
   first_name: string | null;
   last_name: string | null;
   avatar_url: string | null;
+  username: string;
+  bio: string | null;
   created_at: string;
+}
+
+export interface ProfilePublic {
+  id: string;
+  username: string;
+  first_name: string | null;
+  last_name: string | null;
+  avatar_url: string | null;
+  bio: string | null;
 }
 
 export interface EventRow {
@@ -228,4 +241,87 @@ export interface Role {
   name: string;
   description: string | null;
   is_system: boolean;
+}
+
+// ---------------------------------------------------------------------------
+// Social layer (20261014000000_social.sql)
+// ---------------------------------------------------------------------------
+
+export interface ClubPublic {
+  id: string;
+  name: string;
+  slug: string;
+  category: string;
+  logo_url: string | null;
+  cover_image_url: string | null;
+  primary_color: string;
+  latitude: number;
+  longitude: number;
+  description: string | null;
+}
+
+export type PostKind = "photo" | "video" | "carousel" | "event";
+
+export interface PostMediaItem {
+  url: string;
+  kind: "post_photo" | "post_video";
+}
+
+export interface PostFeedItem {
+  id: string;
+  club_id: string;
+  club_slug: string;
+  club_name: string;
+  club_logo_url: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  caption: string | null;
+  kind: PostKind;
+  created_at: string;
+  event_id: string | null;
+  event_title: string | null;
+  event_start_at: string | null;
+  event_price_cents: number | null;
+  event_currency: string | null;
+  event_location: string | null;
+  media: PostMediaItem[];
+  like_count: number;
+  comment_count: number;
+}
+
+export interface ClubStats {
+  club_id: string;
+  follower_count: number;
+  post_count: number;
+  upcoming_event_count: number;
+}
+
+export interface PostComment {
+  id: string;
+  post_id: string;
+  user_id: string;
+  body: string;
+  created_at: string;
+}
+
+export interface Story {
+  id: string;
+  club_id: string;
+  storage_path: string;
+  media_url: string;
+  kind: "photo" | "video";
+  created_at: string;
+  expires_at: string;
+}
+
+export interface Message {
+  id: string;
+  conversation_id: string;
+  sender_id: string;
+  as_club: boolean;
+  body: string | null;
+  shared_post_id: string | null;
+  shared_event_id: string | null;
+  shared_club_id: string | null;
+  created_at: string;
 }

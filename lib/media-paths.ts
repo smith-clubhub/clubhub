@@ -13,3 +13,9 @@ export function buildStoragePath(clubId: string, kind: MediaKind, filename: stri
 export function bucketForKind(kind: MediaKind) {
   return kind === "logo" || kind === "cover" ? "club-branding" : "club-gallery";
 }
+
+/** Feed posts and stories live under {club_id}/posts/ and {club_id}/stories/ in club-gallery. */
+export function socialStoragePath(clubId: string, folder: "posts" | "stories", filename: string) {
+  const ext = (filename.split(".").pop() || "bin").toLowerCase().replace(/[^a-z0-9]/g, "");
+  return `${clubId}/${folder}/${globalThis.crypto.randomUUID()}.${ext}`;
+}

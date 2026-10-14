@@ -21,12 +21,12 @@ export async function getClubMediaUsage(clubId: string): Promise<ClubMediaUsage>
       .from("club_media_assets")
       .select("id", { count: "exact", head: true })
       .eq("club_id", clubId)
-      .eq("kind", "gallery_photo"),
+      .in("kind", ["gallery_photo", "post_photo"]),
     supabase
       .from("club_media_assets")
       .select("id", { count: "exact", head: true })
       .eq("club_id", clubId)
-      .eq("kind", "gallery_video"),
+      .in("kind", ["gallery_video", "post_video"]),
   ]);
 
   const tier = club?.club_package_tiers as unknown as {

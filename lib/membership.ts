@@ -20,12 +20,23 @@ export function computeEffectiveStatus(member: StatusInput, plan?: GraceInput): 
   return Date.now() > graceCutoff ? "expired" : "active";
 }
 
+const CURRENCY_SYMBOLS: Record<string, string> = { ZAR: "R", USD: "$", EUR: "€", GBP: "£" };
+
+/**
+ * "R150", "R1 250.50". Hand-rolled rather than Intl: Node's and browsers' ICU
+ * data disagree for en-ZA (decimal comma vs point, NBSP variants), which breaks
+ * hydration when client components render prices.
+ */
 export function formatMoney(cents: number, currency: string) {
-  return new Intl.NumberFormat("en-ZA", {
-    style: "currency",
-    currency: currency || "ZAR",
-    minimumFractionDigits: 2,
-  }).format(cents / 100);
+  const code = (currency || "ZAR").toUpperCase();
+  const symbol = CURRENCY_SYMBOLS[code] ?? `${code} `;
+  const sign = cents < 0 ? "-" : "";
+  const abs = Math.abs(Math.round(cents));
+  const whole = Math.floor(abs / 100)
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  const fraction = abs % 100;
+  return `${sign}${symbol}${whole}${fraction ? `.${fraction.toString().padStart(2, "0")}` : ""}`;
 }
 
 export function billingIntervalLabel(interval: MembershipPlan["billing_interval"]) {

@@ -47,15 +47,11 @@ export async function updateSession(request: NextRequest) {
   const { data } = await supabase.auth.getClaims();
   const user = data?.claims;
 
-  if (
-    request.nextUrl.pathname !== "/" &&
-    !user &&
-    !request.nextUrl.pathname.startsWith("/login") &&
-    !request.nextUrl.pathname.startsWith("/auth")
-  ) {
+  if (!user && !isPublicPath(request.nextUrl.pathname)) {
     // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone();
     url.pathname = "/auth/login";
+    url.search = `?next=${encodeURIComponent(request.nextUrl.pathname)}`;
     return NextResponse.redirect(url);
   }
 
@@ -73,4 +69,15 @@ export async function updateSession(request: NextRequest) {
   // of sync and terminate the user's session prematurely!
 
   return supabaseResponse;
+}
+
+// Browsable while logged out, like Instagram's public profiles/posts. Liking,
+// following, commenting etc. are gated in the server actions instead.
+const PUBLIC_PREFIXES = ["/auth", "/login", "/explore", "/map", "/p/", "/stories/"];
+
+function isPublicPath(pathname: string) {
+  if (pathname === "/") return true;
+  if (PUBLIC_PREFIXES.some((p) => pathname.startsWith(p))) return true;
+  // Club profile + its public event pages; /c/[slug]/admin, /join, /card etc. stay gated.
+  return /^\/c\/[^/]+(\/events(\/[^/]+)?)?\/?$/.test(pathname);
 }

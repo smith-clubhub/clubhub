@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Geist, Grand_Hotel } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
 
@@ -9,9 +9,9 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "ClubHub — Membership, Events & Payments for Clubs",
+  title: "ClubHub",
   description:
-    "ClubHub gives club administrators one dashboard for members, events, communication and payments, and gives members one app for everything about their club.",
+    "Follow South Africa's clubs, see what's on tonight, and find the clubs nearest to you.",
   icons: {
     icon: "/brand/mark.png",
   },
@@ -23,6 +23,13 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
+const scriptFont = Grand_Hotel({
+  variable: "--font-script",
+  weight: "400",
+  display: "swap",
+  subsets: ["latin"],
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -30,7 +37,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.className} antialiased`}>
+      <body className={`${geistSans.className} ${scriptFont.variable} antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
