@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Grand_Hotel } from "next/font/google";
+import { Outfit } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
 
@@ -17,15 +17,9 @@ export const metadata: Metadata = {
   },
 };
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  display: "swap",
-  subsets: ["latin"],
-});
-
-const scriptFont = Grand_Hotel({
-  variable: "--font-script",
-  weight: "400",
+// Geometric sans that matches the ClubHub wordmark.
+const outfit = Outfit({
+  variable: "--font-outfit",
   display: "swap",
   subsets: ["latin"],
 });
@@ -37,7 +31,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.className} ${scriptFont.variable} antialiased`}>
+      <body className={`${outfit.className} ${outfit.variable} antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

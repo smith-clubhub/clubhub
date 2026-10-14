@@ -117,7 +117,7 @@ export default async function ProfilePage({ searchParams }: { searchParams: Prom
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={r.events.cover_image_url} alt="" className="size-12 rounded-lg object-cover" />
                 ) : (
-                  <span className="ig-gradient size-12 shrink-0 rounded-lg" />
+                  <span className="brand-tile size-12 shrink-0 rounded-lg" />
                 )}
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-sm font-semibold">{r.events.title}</span>

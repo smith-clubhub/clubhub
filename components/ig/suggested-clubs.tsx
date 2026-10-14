@@ -42,7 +42,7 @@ export function SuggestedClubs({
   return (
     <section className="py-4 border-b md:border-none">
       <div className="flex items-center justify-between px-4 pb-3">
-        <h2 className="font-semibold text-sm">Clubs near you</h2>
+        <h2 className="font-bold">Clubs near you</h2>
         <Link href="/map" className="text-sm font-semibold text-primary">
           See map
         </Link>
@@ -51,12 +51,12 @@ export function SuggestedClubs({
         {nearest.map(({ club, km }) => (
           <div
             key={club.id}
-            className="snap-start shrink-0 w-[150px] rounded-lg border flex flex-col items-center gap-1.5 p-3 text-center"
+            className="snap-start shrink-0 w-[150px] rounded-3xl border bg-card flex flex-col items-center gap-1.5 p-3 text-center shadow-sm"
           >
             <Link href={`/c/${club.slug}`} className="flex flex-col items-center gap-1.5 min-w-0 w-full">
               <ClubAvatar url={club.logo_url} name={club.name} size={72} />
               <p className="font-semibold text-sm truncate w-full">{club.name}</p>
-              <p className="text-xs text-muted-foreground flex items-center gap-0.5">
+              <p className="inline-flex items-center gap-0.5 rounded-full bg-accent px-2 py-0.5 text-xs font-semibold text-accent-foreground">
                 <MapPin className="size-3" />
                 {formatKm(km)}
               </p>

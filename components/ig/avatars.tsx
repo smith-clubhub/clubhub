@@ -9,6 +9,9 @@ function initials(name: string) {
     .join("");
 }
 
+// Clubs are squircles, people are circles -- tells them apart at a glance.
+const CLUB_RADIUS = "rounded-[32%]";
+
 function AvatarImage({
   url,
   name,
@@ -23,7 +26,7 @@ function AvatarImage({
   return (
     <span
       className={cn(
-        "inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted text-muted-foreground font-semibold select-none",
+        "inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-accent text-accent-foreground font-semibold select-none",
         className,
       )}
       style={{ width: size, height: size, fontSize: Math.max(10, size * 0.36) }}
@@ -43,8 +46,8 @@ export function UserAvatar({ url, name, size = 32 }: { url: string | null; name:
 }
 
 /**
- * Club avatar with an Instagram story ring: gradient when there is an unseen
- * story, grey when all stories are seen, none when there are no stories.
+ * Club avatar (squircle) with a story ring: brand-orange gradient when there
+ * is an unseen story, grey when all are seen, none when there are no stories.
  */
 export function ClubAvatar({
   url,
@@ -57,15 +60,15 @@ export function ClubAvatar({
   size?: number;
   ring?: "unseen" | "seen" | "none";
 }) {
-  if (ring === "none") return <AvatarImage url={url} name={name} size={size} />;
+  if (ring === "none") return <AvatarImage url={url} name={name} size={size} className={CLUB_RADIUS} />;
   const pad = size >= 56 ? 3 : 2;
   return (
     <span
-      className={cn("inline-flex shrink-0 rounded-full", ring === "unseen" ? "ig-gradient" : "bg-border")}
+      className={cn("inline-flex shrink-0", CLUB_RADIUS, ring === "unseen" ? "brand-gradient" : "bg-border")}
       style={{ padding: pad }}
     >
-      <span className="rounded-full bg-background" style={{ padding: pad }}>
-        <AvatarImage url={url} name={name} size={size - pad * 4} />
+      <span className={cn("bg-background", CLUB_RADIUS)} style={{ padding: pad }}>
+        <AvatarImage url={url} name={name} size={size - pad * 4} className={CLUB_RADIUS} />
       </span>
     </span>
   );

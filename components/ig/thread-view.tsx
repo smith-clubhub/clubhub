@@ -89,7 +89,7 @@ export function ThreadView({ thread, viewerId }: { thread: ThreadData; viewerId:
                     <p
                       className={cn(
                         "whitespace-pre-line break-words rounded-3xl px-4 py-2 text-[15px]",
-                        mine ? "bg-[#3797f0] text-white" : "bg-secondary",
+                        mine ? "bg-primary text-primary-foreground rounded-br-md" : "bg-secondary rounded-bl-md",
                       )}
                     >
                       {m.body}
@@ -141,7 +141,7 @@ function SharedCard({ m, thread }: { m: Message; thread: ThreadData }) {
             // eslint-disable-next-line @next/next/no-img-element
             <img src={img.url} alt="" className="h-full w-full object-cover" />
           ) : (
-            <div className="ig-gradient flex h-full w-full items-center justify-center p-4 text-center font-bold text-white">
+            <div className="brand-tile flex h-full w-full items-center justify-center p-4 text-center font-bold text-white">
               {p?.event_title ?? p?.caption ?? "View post"}
             </div>
           )}
@@ -159,7 +159,7 @@ function SharedCard({ m, thread }: { m: Message; thread: ThreadData }) {
           // eslint-disable-next-line @next/next/no-img-element
           <img src={e.cover_image_url} alt="" className="size-14 rounded-xl object-cover" />
         ) : (
-          <span className="ig-gradient flex size-14 shrink-0 items-center justify-center rounded-xl text-white">
+          <span className="brand-tile flex size-14 shrink-0 items-center justify-center rounded-xl text-white">
             <CalendarDays className="size-6" />
           </span>
         )}

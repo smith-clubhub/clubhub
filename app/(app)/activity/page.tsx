@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Heart } from "lucide-react";
+import { Bell } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { timeAgo } from "@/lib/time";
 import { PageHeader } from "@/components/ig/app-shell";
@@ -31,8 +31,8 @@ export default async function ActivityPage() {
       <PageHeader title="Notifications" />
       {(notifications ?? []).length === 0 ? (
         <div className="flex flex-col items-center gap-2 px-8 py-20 text-center">
-          <span className="rounded-full border-2 border-foreground p-4">
-            <Heart className="size-10" strokeWidth={1.25} />
+          <span className="rounded-full bg-accent p-5 text-primary">
+            <Bell className="size-10" strokeWidth={1.5} />
           </span>
           <p className="text-lg font-semibold">Activity on clubs you follow</p>
           <p className="text-sm text-muted-foreground">New posts, events and announcements from your clubs will show up here.</p>
@@ -44,7 +44,7 @@ export default async function ActivityPage() {
             const href = club ? (n.type === "announcement" ? `/c/${club.slug}/announcements` : `/c/${club.slug}`) : "#";
             return (
               <li key={n.id}>
-                <Link href={href} className={`flex items-center gap-3 px-4 py-2.5 hover:bg-accent ${n.read_at ? "" : "bg-primary/5"}`}>
+                <Link href={href} className={`flex items-center gap-3 px-4 py-2.5 hover:bg-accent ${n.read_at ? "" : "bg-accent/60"}`}>
                   <ClubAvatar url={club?.logo_url ?? null} name={club?.name ?? "ClubHub"} size={44} />
                   <p className="min-w-0 flex-1 text-sm">
                     <span className="font-semibold">{club?.slug ?? n.title}</span>{" "}

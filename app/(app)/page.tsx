@@ -5,6 +5,7 @@ import { getStoryClubs, storyRingMap } from "@/lib/stories";
 import { FeedList } from "@/components/ig/feed-list";
 import { StoriesTray } from "@/components/ig/stories-tray";
 import { SuggestedClubs } from "@/components/ig/suggested-clubs";
+import { BrandMark } from "@/components/ig/brand";
 import type { ClubPublic } from "@/lib/types";
 
 export default async function HomePage() {
@@ -26,18 +27,25 @@ export default async function HomePage() {
       <StoriesTray clubs={storyClubs} />
 
       {!userId && (
-        <div className="mx-4 my-3 rounded-lg border p-4 text-center">
-          <p className="font-semibold">See what&apos;s happening at SA&apos;s clubs tonight</p>
-          <p className="text-sm text-muted-foreground mt-1">Log in to follow clubs, like posts and get tickets.</p>
-          <div className="mt-3 flex justify-center gap-2">
-            <Link href="/auth/login" className="rounded-lg bg-primary px-4 py-1.5 text-sm font-semibold text-primary-foreground">
+        <section className="brand-tile relative mx-3 my-3 overflow-hidden rounded-3xl p-5 text-white">
+          <BrandMark size={150} className="absolute -right-8 -top-8 text-white/15" />
+          <p className="relative text-2xl font-bold leading-tight">
+            Your city&apos;s nightlife,
+            <br />
+            one tap away.
+          </p>
+          <p className="relative mt-1.5 text-sm text-white/90">
+            Follow SA clubs, see what&apos;s on tonight and find the dance floor nearest you.
+          </p>
+          <div className="relative mt-4 flex gap-2">
+            <Link href="/auth/sign-up" className="rounded-full bg-white px-5 py-2 text-sm font-bold text-[#c63d0f]">
+              Join ClubHub
+            </Link>
+            <Link href="/auth/login" className="rounded-full bg-white/20 px-5 py-2 text-sm font-semibold backdrop-blur">
               Log in
             </Link>
-            <Link href="/auth/sign-up" className="rounded-lg bg-secondary px-4 py-1.5 text-sm font-semibold">
-              Sign up
-            </Link>
           </div>
-        </div>
+        </section>
       )}
 
       {(mode === "discover" || feed.posts.length < 3) && (
@@ -46,6 +54,7 @@ export default async function HomePage() {
 
       {feed.posts.length === 0 ? (
         <div className="px-8 py-16 text-center">
+          <BrandMark size={56} className="mx-auto mb-3 text-primary" />
           <p className="text-lg font-semibold">No posts yet</p>
           <p className="text-sm text-muted-foreground mt-1">
             {mode === "following"

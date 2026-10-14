@@ -43,7 +43,7 @@ export function FollowButton({
       onClick={toggle}
       disabled={pending}
       className={cn(
-        "rounded-lg font-semibold transition-colors disabled:opacity-70",
+        "rounded-full font-semibold transition-colors disabled:opacity-70",
         size === "sm" ? "px-3 py-1 text-xs" : "px-5 py-1.5 text-sm",
         following ? "bg-secondary text-secondary-foreground hover:bg-secondary/80" : "bg-primary text-primary-foreground hover:bg-primary/90",
         className,

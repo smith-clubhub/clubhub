@@ -36,7 +36,7 @@ export function PostMedia({
     return (
       <div
         onClick={handleTap}
-        className="aspect-square w-full ig-gradient flex flex-col items-center justify-center gap-3 p-8 text-white text-center select-none"
+        className="aspect-square w-full brand-tile flex flex-col items-center justify-center gap-3 p-8 text-white text-center select-none"
       >
         <CalendarDays className="size-10" strokeWidth={1.5} />
         <p className="text-2xl font-bold leading-tight line-clamp-4">{fallbackTitle}</p>

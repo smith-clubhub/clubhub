@@ -9,7 +9,7 @@ export function StoriesTray({ clubs }: { clubs: StoryClub[] }) {
       {clubs.map((c) => (
         <Link key={c.clubId} href={`/stories/${c.slug}`} className="flex w-[66px] shrink-0 flex-col items-center gap-1">
           <ClubAvatar url={c.logoUrl} name={c.name} size={66} ring={c.allSeen ? "seen" : "unseen"} />
-          <span className="w-full truncate text-center text-xs">{c.slug}</span>
+          <span className="w-full truncate text-center text-xs">{c.name}</span>
         </Link>
       ))}
     </div>

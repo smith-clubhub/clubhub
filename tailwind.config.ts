@@ -11,7 +11,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        script: ["var(--font-script)", "cursive"],
+        sans: ["var(--font-outfit)", "ui-sans-serif", "system-ui", "sans-serif"],
       },
       colors: {
         background: "hsl(var(--background))",
@@ -55,16 +55,16 @@ export default {
           "5": "hsl(var(--chart-5))",
         },
         brand: {
-          50: "#fff7ed",
-          100: "#ffedd5",
-          200: "#fed7aa",
-          300: "#fdba74",
-          400: "#fb923c",
-          500: "#f97316",
-          600: "#ea580c",
-          700: "#c2410c",
-          800: "#9a3412",
-          900: "#7c2d12",
+          50: "#fff5ee",
+          100: "#ffe6d4",
+          200: "#ffc9a6",
+          300: "#ffa871",
+          400: "#ff9150",
+          500: "#ff7f32",
+          600: "#f2541b",
+          700: "#c63d0f",
+          800: "#9c3212",
+          900: "#7e2c13",
         },
       },
       borderRadius: {

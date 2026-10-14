@@ -36,7 +36,7 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <GeolocationProvider>
       <AppNav viewer={viewer} />
-      <div className="md:pl-[72px] xl:pl-[244px] pb-[calc(52px+env(safe-area-inset-bottom))] md:pb-0 min-h-screen">
+      <div className="md:pl-[76px] xl:pl-[248px] pb-[calc(100px+env(safe-area-inset-bottom))] md:pb-0 min-h-screen">
         {children}
       </div>
     </GeolocationProvider>

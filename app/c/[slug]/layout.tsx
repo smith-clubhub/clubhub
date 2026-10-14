@@ -29,7 +29,7 @@ export default async function ClubLayout({
           title={
             <Link href={`/c/${club.slug}`} className="flex items-center gap-1">
               <ChevronLeft className="size-5 md:hidden" />
-              {club.slug}
+              @{club.slug}
               {club.status !== "active" && (
                 <Badge variant="outline" className="ml-2">
                   {club.status}

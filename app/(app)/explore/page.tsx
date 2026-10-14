@@ -97,7 +97,7 @@ export default async function ExplorePage({ searchParams }: { searchParams: Prom
                       // eslint-disable-next-line @next/next/no-img-element
                       <img src={e.cover_image_url} alt="" className="size-11 rounded-lg object-cover" />
                     ) : (
-                      <span className="ig-gradient flex size-11 shrink-0 items-center justify-center rounded-lg text-white">
+                      <span className="brand-tile flex size-11 shrink-0 items-center justify-center rounded-lg text-white">
                         <CalendarDays className="size-5" />
                       </span>
                     )}

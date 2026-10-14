@@ -58,8 +58,8 @@ export default async function InboxPage({ searchParams }: { searchParams: Promis
       <h2 className="px-4 pb-2 pt-2 text-base font-bold">Messages</h2>
       {threads.length === 0 ? (
         <div className="flex flex-col items-center gap-2 px-8 py-16 text-center">
-          <span className="rounded-full border-2 border-foreground p-4">
-            <MessageCircle className="size-10" strokeWidth={1.25} />
+          <span className="rounded-full bg-accent p-5 text-primary">
+            <MessageCircle className="size-10" strokeWidth={1.5} />
           </span>
           <p className="text-lg font-semibold">Your messages</p>
           <p className="text-sm text-muted-foreground">

@@ -14,7 +14,7 @@ export function MessageClubButton({ clubId, isAuthenticated }: { clubId: string;
         if (!isAuthenticated) return gate();
         startTransition(async () => void (await messageClubAction(clubId)));
       }}
-      className="flex-1 md:flex-none rounded-lg bg-secondary px-4 py-1.5 text-sm font-semibold hover:bg-secondary/80 disabled:opacity-70"
+      className="flex-1 md:flex-none rounded-full bg-secondary px-4 py-2 text-sm font-semibold hover:bg-secondary/80 disabled:opacity-70"
     >
       Message
     </button>

@@ -11,13 +11,14 @@ import { FollowButton } from "@/components/ig/follow-button";
 import { PostGrid } from "@/components/ig/post-grid";
 import { MessageClubButton } from "@/components/ig/message-club-button";
 import { ShareButton } from "@/components/ig/share-button";
+import { DistancePill } from "@/components/ig/distance-pill";
 import type { ClubStats, PostFeedItem } from "@/lib/types";
 
 function Stat({ value, label }: { value: number; label: string }) {
   return (
-    <div className="flex flex-col items-center md:flex-row md:gap-1.5">
-      <span className="font-semibold">{value.toLocaleString("en-ZA")}</span>
-      <span className="text-muted-foreground md:text-foreground text-sm md:text-base">{label}</span>
+    <div className="flex flex-col items-center rounded-2xl bg-secondary py-2.5">
+      <span className="text-lg font-bold leading-none">{value.toLocaleString("en-ZA")}</span>
+      <span className="mt-1 text-xs text-muted-foreground">{label}</span>
     </div>
   );
 }
@@ -69,128 +70,102 @@ export default async function ClubProfilePage({
 
   return (
     <div className="flex flex-col">
-      {/* Header */}
-      <section className="flex items-center gap-6 md:gap-20 md:px-10 md:py-4">
-        <Link href={story ? `/stories/${club.slug}` : `/c/${club.slug}`} className="shrink-0">
-          {[
-            { size: 86, cls: "md:hidden" },
-            { size: 150, cls: "hidden md:block" },
-          ].map(({ size, cls }) => (
-            <span key={size} className={cls}>
-              <ClubAvatar
-                url={club.logo_url}
-                name={club.name}
-                size={size}
-                ring={story ? (story.allSeen ? "seen" : "unseen") : "none"}
-              />
-            </span>
-          ))}
-        </Link>
-        <div className="flex min-w-0 flex-1 flex-col gap-4">
-          <div className="hidden md:flex items-center gap-3">
-            <h1 className="text-xl">{club.slug}</h1>
-          </div>
-          <div className="flex justify-around md:justify-start md:gap-10">
-            <Stat value={s.post_count} label="posts" />
-            <Stat value={s.follower_count} label="followers" />
-            <Stat value={s.upcoming_event_count} label="events" />
-          </div>
-          <div className="hidden md:block text-sm">
-            <p className="font-semibold">{club.name}</p>
-            <p className="text-muted-foreground capitalize">{club.category} club</p>
-            {club.description && <p className="whitespace-pre-line mt-1">{club.description}</p>}
-          </div>
+      {/* Cover + avatar */}
+      <div className="relative">
+        <div className="h-36 overflow-hidden rounded-3xl md:h-56">
+          {club.cover_image_url ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={club.cover_image_url} alt="" className="h-full w-full object-cover" />
+          ) : (
+            <div className="brand-tile h-full w-full" />
+          )}
         </div>
+        <Link
+          href={story ? `/stories/${club.slug}` : `/c/${club.slug}`}
+          className="absolute -bottom-12 left-4 rounded-[34%] bg-background p-1 md:left-8"
+        >
+          <ClubAvatar url={club.logo_url} name={club.name} size={104} ring={story ? (story.allSeen ? "seen" : "unseen") : "none"} />
+        </Link>
+      </div>
+
+      {/* Identity */}
+      <section className="px-1 pt-14 md:px-8">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+          <h1 className="text-2xl font-bold tracking-tight">{club.name}</h1>
+          <DistancePill lat={club.latitude} lng={club.longitude} />
+        </div>
+        <p className="text-sm text-muted-foreground">
+          @{club.slug} · <span className="capitalize">{club.category}</span>
+        </p>
+        {club.description && <p className="mt-2 whitespace-pre-line text-[15px]">{club.description}</p>}
+
+        <div className="mt-4 grid grid-cols-3 gap-2 md:max-w-md">
+          <Stat value={s.post_count} label="posts" />
+          <Stat value={s.follower_count} label="followers" />
+          <Stat value={s.upcoming_event_count} label="upcoming" />
+        </div>
+
+        {/* Actions */}
+        <div className="mt-4 flex flex-wrap gap-2">
+          <FollowButton
+            clubId={club.id}
+            initialFollowing={!!follow}
+            isAuthenticated={!!userId}
+            className="flex-1 rounded-full py-2 md:flex-none md:min-w-[130px]"
+          />
+          <MessageClubButton clubId={club.id} isAuthenticated={!!userId} />
+          {directions && (
+            <a href={directions} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-1.5 rounded-full bg-secondary px-4 py-2 text-sm font-semibold hover:bg-secondary/80 px-3 sm:px-4" aria-label="Directions">
+              <Navigation className="size-4" />
+              <span className="hidden sm:inline">Directions</span>
+            </a>
+          )}
+          <ShareButton kind="club" id={club.id} slug={club.slug} isAuthenticated={!!userId} className="inline-flex items-center justify-center gap-1.5 rounded-full bg-secondary px-4 py-2 text-sm font-semibold hover:bg-secondary/80 px-3">
+            <Send className="size-4" />
+          </ShareButton>
+          {isStaff && (
+            <Link href={`/c/${club.slug}/admin`} aria-label="Manage club" className="inline-flex items-center justify-center gap-1.5 rounded-full bg-secondary px-4 py-2 text-sm font-semibold hover:bg-secondary/80 px-3">
+              <Settings className="size-4" />
+            </Link>
+          )}
+        </div>
+
+        {/* Membership */}
+        {(membership || userId) && (
+          <Link
+            href={membership ? `/c/${club.slug}/card` : `/c/${club.slug}/join`}
+            className="mt-3 flex items-center gap-3 rounded-2xl border border-dashed border-primary/50 bg-accent/40 px-4 py-3 text-sm hover:bg-accent"
+          >
+            <IdCard className="size-5 text-primary" />
+            <span className="flex-1">
+              {membership ? (
+                <>
+                  Member{membership.member_number ? ` #${membership.member_number}` : ""} ·{" "}
+                  <span className="capitalize">{computeEffectiveStatus(membership)}</span>
+                </>
+              ) : (
+                "Become a member for perks and member-only events"
+              )}
+            </span>
+            <span className="font-semibold text-primary">{membership ? "View card" : "Join"}</span>
+          </Link>
+        )}
       </section>
 
-      {/* Mobile bio */}
-      <div className="md:hidden pt-3 text-sm">
-        <p className="font-semibold">{club.name}</p>
-        <p className="text-muted-foreground capitalize">{club.category} club</p>
-        {club.description && <p className="whitespace-pre-line mt-1">{club.description}</p>}
-      </div>
-
-      {/* Actions */}
-      <div className="flex gap-2 pt-4 md:px-10">
-        <FollowButton
-          clubId={club.id}
-          initialFollowing={!!follow}
-          isAuthenticated={!!userId}
-          className="flex-1 md:flex-none md:min-w-[120px]"
-        />
-        <MessageClubButton clubId={club.id} isAuthenticated={!!userId} />
-        {directions && (
-          <a
-            href={directions}
-            target="_blank"
-            rel="noreferrer"
-            className="flex-1 md:flex-none inline-flex items-center justify-center gap-1.5 rounded-lg bg-secondary px-4 py-1.5 text-sm font-semibold hover:bg-secondary/80"
-          >
-            <Navigation className="size-4" /> Directions
-          </a>
-        )}
-        <ShareButton
-          kind="club"
-          id={club.id}
-          slug={club.slug}
-          isAuthenticated={!!userId}
-          className="inline-flex items-center justify-center rounded-lg bg-secondary px-3 py-1.5 hover:bg-secondary/80"
-        >
-          <Send className="size-4" />
-        </ShareButton>
-        {isStaff && (
-          <Link
-            href={`/c/${club.slug}/admin`}
-            aria-label="Manage club"
-            className="inline-flex items-center justify-center rounded-lg bg-secondary px-3 py-1.5 hover:bg-secondary/80"
-          >
-            <Settings className="size-4" />
-          </Link>
-        )}
-      </div>
-
-      {/* Membership */}
-      <div className="pt-3 md:px-10">
-        {membership ? (
-          <Link
-            href={`/c/${club.slug}/card`}
-            className="flex items-center gap-3 rounded-lg border px-3 py-2.5 text-sm hover:bg-accent"
-          >
-            <IdCard className="size-5" />
-            <span className="flex-1">
-              Member{membership.member_number ? ` #${membership.member_number}` : ""} ·{" "}
-              <span className="capitalize">{computeEffectiveStatus(membership)}</span>
-            </span>
-            <span className="font-semibold text-primary">View card</span>
-          </Link>
-        ) : (
-          userId && (
-            <Link
-              href={`/c/${club.slug}/join`}
-              className="flex items-center gap-3 rounded-lg border px-3 py-2.5 text-sm hover:bg-accent"
-            >
-              <IdCard className="size-5" />
-              <span className="flex-1">Become a member for perks and member-only events</span>
-              <span className="font-semibold text-primary">Join</span>
-            </Link>
-          )
-        )}
-      </div>
-
-      {/* Tabs */}
-      <div className="mt-6 flex justify-center gap-14 border-t">
+      {/* Tabs: segmented control */}
+      <div className="mx-auto mt-6 mb-4 inline-flex rounded-full bg-secondary p-1 md:mx-8 md:self-start">
         {tabs.map((t) => (
           <Link
             key={t.key}
             href={`/c/${club.slug}${t.key === "posts" ? "" : `?tab=${t.key}`}`}
             scroll={false}
             className={cn(
-              "-mt-px flex items-center gap-1.5 border-t py-3 text-xs font-semibold uppercase tracking-widest",
-              tab === t.key ? "border-foreground" : "border-transparent text-muted-foreground",
+              "flex items-center gap-1.5 rounded-full px-5 py-1.5 text-sm font-semibold transition-colors",
+              tab === t.key ? "bg-background text-primary shadow-sm" : "text-muted-foreground",
             )}
           >
             <t.icon className="size-4" />
-            <span className="hidden sm:inline">{t.label}</span>
+            {t.label}
           </Link>
         ))}
       </div>
@@ -207,7 +182,7 @@ export default async function ClubProfilePage({
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={e.cover_image_url} alt="" className="h-full w-full object-cover" />
                   ) : (
-                    <div className="ig-gradient h-full w-full" />
+                    <div className="brand-tile h-full w-full" />
                   )}
                   <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-3 text-white">
                     <p className="text-xs opacity-90">{eventWhen(e.start_at)}</p>

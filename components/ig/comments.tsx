@@ -62,7 +62,7 @@ export function CommentComposer({ postId }: { postId: string }) {
   return (
     <form
       onSubmit={submit}
-      className="fixed md:static bottom-[calc(52px+env(safe-area-inset-bottom))] inset-x-0 z-20 flex items-center gap-3 border-t bg-background px-4 py-3"
+      className="fixed md:static bottom-[calc(92px+env(safe-area-inset-bottom))] inset-x-3 z-20 flex items-center gap-3 rounded-full border bg-background px-4 py-2.5 shadow-lg md:mt-2 md:shadow-none"
     >
       <input
         ref={input}
