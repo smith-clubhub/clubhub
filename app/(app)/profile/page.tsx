@@ -191,7 +191,7 @@ export default async function ProfilePage({ searchParams }: { searchParams: Prom
 
   return (
     <main className="mx-auto w-full max-w-[935px]">
-      <header className="sticky top-0 z-20 flex h-12 items-center justify-between border-b bg-background/95 px-4 backdrop-blur md:static md:h-auto md:border-none md:pt-6">
+      <header className="sticky top-0 z-20 box-content flex h-12 pt-[env(safe-area-inset-top)] items-center justify-between border-b bg-background/95 px-4 backdrop-blur md:static md:h-auto md:border-none md:pt-6">
         <h1 className="font-semibold text-base md:text-xl">{profile?.username}</h1>
         <details className="relative">
           <summary className="list-none cursor-pointer p-1" aria-label="Settings">

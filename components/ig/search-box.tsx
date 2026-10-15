@@ -19,7 +19,7 @@ export function SearchBox({ initial }: { initial: string }) {
   }, [value, initial, pathname, router]);
 
   return (
-    <div className="sticky top-0 z-20 bg-background px-4 py-3 md:pt-6">
+    <div className="sticky top-0 z-20 bg-background px-4 py-3 pt-[max(12px,env(safe-area-inset-top))] md:pt-6">
       <label className="flex items-center gap-2 rounded-lg bg-secondary px-3 py-2">
         <Search className="size-4 text-muted-foreground" />
         <input

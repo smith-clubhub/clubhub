@@ -65,7 +65,7 @@ export function AppNav({ viewer }: { viewer: NavViewer | null }) {
     <>
       {/* Mobile top bar (home only) */}
       {pathname === "/" && (
-        <header className="md:hidden sticky top-0 z-30 h-16 flex items-center justify-between px-4 bg-background/90 backdrop-blur-md">
+        <header className="md:hidden sticky top-0 z-30 box-content h-16 pt-[env(safe-area-inset-top)] flex items-center justify-between px-4 bg-background/90 backdrop-blur-md">
           <Wordmark />
           <div className="flex items-center gap-2">
             <Link href={ACTIVITY.href} aria-label="Activity" className="rounded-full bg-secondary p-2.5">

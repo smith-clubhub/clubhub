@@ -73,7 +73,7 @@ export async function updateSession(request: NextRequest) {
 
 // Browsable while logged out, like Instagram's public profiles/posts. Liking,
 // following, commenting etc. are gated in the server actions instead.
-const PUBLIC_PREFIXES = ["/auth", "/login", "/explore", "/map", "/p/", "/stories/", "/icon", "/apple-icon"];
+const PUBLIC_PREFIXES = ["/auth", "/login", "/explore", "/map", "/p/", "/stories/", "/icon", "/apple-icon", "/offline"];
 
 function isPublicPath(pathname: string) {
   if (pathname === "/") return true;

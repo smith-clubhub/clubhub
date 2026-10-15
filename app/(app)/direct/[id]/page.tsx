@@ -26,7 +26,7 @@ export default async function ThreadPage({ params }: { params: Promise<{ id: str
 
   return (
     <main className="mx-auto flex h-[calc(100dvh-100px-env(safe-area-inset-bottom))] w-full max-w-[680px] flex-col md:h-dvh md:border-x">
-      <header className="flex h-14 shrink-0 items-center gap-3 border-b px-3">
+      <header className="box-content flex h-14 shrink-0 pt-[env(safe-area-inset-top)] items-center gap-3 border-b px-3">
         <Link href={backHref} aria-label="Back">
           <ChevronLeft className="size-7" />
         </Link>

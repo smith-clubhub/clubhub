@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ff7f32">
+<title>Offline · ClubHub</title>
+<!-- Self-contained on purpose: the service worker serves this with no network,
+     so it can't depend on Next.js bundles, fonts or images. -->
+<style>
+  :root { --bg: #fffcf9; --fg: #1a140f; --muted: #6f655c; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #0f0d0b; --fg: #f7f1ea; --muted: #a59a90; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+         gap: 16px; padding: 32px; text-align: center; background: var(--bg); color: var(--fg);
+         font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  .tile { width: 80px; height: 80px; border-radius: 32%; display: flex; align-items: center; justify-content: center;
+          background: linear-gradient(135deg, #ffb061, #ff7f32 50%, #f2541b); box-shadow: 0 8px 24px rgba(255,127,50,.35); }
+  h1 { margin: 0; font-size: 24px; }
+  p { margin: 0; max-width: 280px; font-size: 14px; line-height: 1.5; color: var(--muted); }
+  button { border: 0; border-radius: 9999px; padding: 10px 24px; font: 600 14px inherit; font-family: inherit;
+           background: #ff7f32; color: #fff; cursor: pointer; }
+</style>
+</head>
+<body>
+  <div class="tile">
+    <svg width="44" height="44" viewBox="0 0 100 100" aria-hidden="true">
+      <defs><mask id="m"><rect width="100" height="100" fill="#fff"/>
+        <g fill="none" stroke="#000" stroke-width="15.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M -14 40 L 41 17.5 Q 50 13.5 59 17.5 L 114 40"/>
+          <path d="M -14 71 L 41 48.5 Q 50 44.5 59 48.5 L 114 71"/>
+          <path d="M -14 102 L 41 79.5 Q 50 75.5 59 79.5 L 114 102"/>
+        </g></mask></defs>
+      <circle cx="50" cy="50" r="50" fill="#fff" mask="url(#m)"/>
+    </svg>
+  </div>
+  <h1>You're offline</h1>
+  <p>ClubHub needs a connection to show what's on. Check your signal and try again.</p>
+  <button onclick="location.reload()">Try again</button>
+</body>
+</html>

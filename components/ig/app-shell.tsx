@@ -46,7 +46,7 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
 /** Sticky in-page header used by every screen except Home (which has the wordmark bar). */
 export function PageHeader({ title, children }: { title: React.ReactNode; children?: React.ReactNode }) {
   return (
-    <header className="sticky top-0 z-20 h-12 flex items-center justify-between gap-3 px-4 bg-background/95 backdrop-blur border-b md:border-none md:pt-6 md:h-auto md:static">
+    <header className="sticky top-0 z-20 box-content h-12 pt-[env(safe-area-inset-top)] flex items-center justify-between gap-3 px-4 bg-background/95 backdrop-blur border-b md:border-none md:pt-6 md:h-auto md:static">
       <h1 className="font-semibold text-base md:text-xl truncate">{title}</h1>
       {children && <div className="flex items-center gap-3 shrink-0">{children}</div>}
     </header>

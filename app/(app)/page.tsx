@@ -6,6 +6,7 @@ import { FeedList } from "@/components/ig/feed-list";
 import { StoriesTray } from "@/components/ig/stories-tray";
 import { SuggestedClubs } from "@/components/ig/suggested-clubs";
 import { BrandMark } from "@/components/ig/brand";
+import { InstallPrompt } from "@/components/ig/pwa";
 import type { ClubPublic } from "@/lib/types";
 
 export default async function HomePage() {
@@ -25,6 +26,7 @@ export default async function HomePage() {
   return (
     <main className="mx-auto w-full max-w-[470px] md:pt-6">
       <StoriesTray clubs={storyClubs} />
+      <InstallPrompt />
 
       {!userId && (
         <section className="brand-tile relative mx-3 my-3 overflow-hidden rounded-3xl p-5 text-white">

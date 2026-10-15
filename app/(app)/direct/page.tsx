@@ -26,7 +26,7 @@ export default async function InboxPage({ searchParams }: { searchParams: Promis
 
   return (
     <main className="mx-auto w-full max-w-[600px]">
-      <header className="sticky top-0 z-20 flex h-14 items-center justify-between border-b bg-background/95 px-4 backdrop-blur md:static md:border-none md:pt-6">
+      <header className="sticky top-0 z-20 box-content flex h-14 pt-[env(safe-area-inset-top)] items-center justify-between border-b bg-background/95 px-4 backdrop-blur md:static md:border-none md:pt-6">
         <h1 className="text-xl font-bold">{activeClub ? activeClub.slug : me?.username}</h1>
         {!activeClub && <NewMessageButton />}
       </header>
