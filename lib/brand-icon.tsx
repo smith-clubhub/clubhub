@@ -35,3 +35,23 @@ export function brandIcon(size: number, markScale = 0.62) {
     { width: size, height: size },
   );
 }
+
+/**
+ * Launch screen: the full ClubHub logo (PNG/Artboard 1.png = public/brand/mark.png)
+ * centred on the app background, matching the in-app loading screen.
+ */
+export async function launchImage(width: number, height: number) {
+  const { readFile } = await import("node:fs/promises");
+  const { join } = await import("node:path");
+  const png = await readFile(join(process.cwd(), "public", "brand", "mark.png"));
+  const logo = Math.round(Math.min(width, height) * 0.9); // the PNG has generous built-in padding
+  return new ImageResponse(
+    (
+      <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", background: "#fffcf9" }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img width={logo} height={logo} alt="" src={`data:image/png;base64,${png.toString("base64")}`} />
+      </div>
+    ),
+    { width, height },
+  );
+}

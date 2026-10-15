@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Outfit } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
+import { LAUNCH_SCREENS } from "@/lib/launch-screens";
 import { ServiceWorkerRegistration } from "@/components/ig/pwa";
 
 const defaultUrl = process.env.VERCEL_URL
@@ -15,6 +16,7 @@ export const metadata: Metadata = {
     capable: true,
     title: "ClubHub",
     statusBarStyle: "default",
+    startupImage: LAUNCH_SCREENS.map(({ file, media }) => ({ url: `/pwa/${file}`, media })),
   },
   formatDetection: { telephone: false },
   title: "ClubHub",
